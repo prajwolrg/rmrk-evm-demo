@@ -7,20 +7,26 @@
 const hre = require("hardhat");
 
 async function main() {
-  const currentTimestampInSeconds = Math.round(Date.now() / 1000);
-  const ONE_YEAR_IN_SECS = 365 * 24 * 60 * 60;
-  const unlockTime = currentTimestampInSeconds + ONE_YEAR_IN_SECS;
+  const accounts = await ethers.getSigners();
+  console.log('Deployer address: ' + (await accounts[0].getAddress()));
 
-  const lockedAmount = hre.ethers.utils.parseEther("1");
+  console.log('Deploy the RMRKEquippableFactory contract')
+  const RMRKEquippableFactory = await ethers.getContractFactory('RMRKEquippableFactory');
+  const rmrkEquippableFactory = await RMRKEquippableFactory.deploy();
+  await rmrkEquippableFactory .deployed();
+  console.log('RMRK Equippable Factory deployed to:', rmrkEquippableFactory.address);
 
-  const Lock = await hre.ethers.getContractFactory("Lock");
-  const lock = await Lock.deploy(unlockTime, { value: lockedAmount });
+  console.log('Deploy the RMRKMultiResourceFactory contract')
+  const RMRKMultiResourceFactory = await ethers.getContractFactory('RMRKMultiResourceFactory');
+  const rmrkMultiResourceFactory = await RMRKMultiResourceFactory.deploy();
+  await rmrkMultiResourceFactory.deployed();
+  console.log('RMRK Multi Resource Factory deployed to:', rmrkMultiResourceFactory.address);
 
-  await lock.deployed();
-
-  console.log(
-    `Lock with 1 ETH and unlock timestamp ${unlockTime} deployed to ${lock.address}`
-  );
+  console.log('Deploy the RMRKNestingFactory contract to deploy')
+  const RMRKNestingFactory = await ethers.getContractFactory('RMRKNestingFactory');
+  const rmrkNestingFactory = await RMRKNestingFactory.deploy();
+  await rmrkNestingFactory.deployed();
+  console.log('RMRK Multi Resource Factory deployed to:', rmrkNestingFactory.address);
 }
 
 // We recommend this pattern to be able to use async/await everywhere
