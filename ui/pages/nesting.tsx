@@ -125,7 +125,8 @@ const Nesting: NextPage = () => {
       })
 
       const receipt = await tx.wait()
-      setCurrentRmrkDeployment(receipt.events[1].args[0])
+      console.log(receipt)
+      // setCurrentRmrkDeployment(receipt.events[1].args[0])
     }
   }
 
