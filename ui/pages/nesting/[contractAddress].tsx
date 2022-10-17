@@ -71,25 +71,36 @@ const NestingNftCollection: NextPage = () => {
         abis.nestingImplAbi,
         signer
       )
-      setIsOwner((await nestingContract.owner()) == (await signer.getAddress()))
-      const nftSupply = await nestingContract.totalSupply()
+      let signerAddress = await signer.getAddress()
+      let contractOwner = await nestingContract.owner()
+      let isContractOwner = signerAddress === contractOwner
+      setIsOwner(isContractOwner)
+
+      const nftSupply = Number(await nestingContract.totalSupply())
+      console.log("NFT supply", nftSupply)
       for (let i = 0; i < nftSupply; i++) {
         let isOwner = false
+        let signerAddress = await signer.getAddress()
+        let tokenUri
+        const nftId = i+1; //NFT ID starts from 1. Note: NFT Id = 0 means NFT does not exist.
         try {
-          isOwner =
-            (await nestingContract.connect(signer).ownerOf(i)) ==
-            (await signer.getAddress())
+          tokenUri = await nestingContract.tokenURI(nftId) 
+          const nftOwner = await nestingContract.ownerOf(nftId)
+          // console.log('NFT Owner', nftOwner)
+          isOwner = nftOwner === signerAddress
+          // console.log('Is owner?', isOwner)
         } catch (error) {
           console.log(error)
         }
         if (isOwner) {
           nfts.push({
-            tokenId: i,
-            owner: await signer.getAddress(),
-            tokenUri: await nestingContract.tokenURI(i),
+            tokenId: nftId,
+            owner: signerAddress,
+            tokenUri
           })
         }
       }
+
     }
     return nfts
   }
@@ -105,12 +116,14 @@ const NestingNftCollection: NextPage = () => {
         signer
       )
 
+      const signerAddress = await signer.getAddress()
+
       const options = {
         value: nestingContract.pricePerMint(),
       }
       const tx = await nestingContract
         .connect(signer)
-        .mint(await signer.getAddress(), 1, options)
+        .mint(signerAddress, 1, options)
 
       addRecentTransaction({
         hash: tx.hash,
