@@ -67,22 +67,27 @@ const Nesting: NextPage = () => {
         abis.nestingImplAbi,
         signer
       )
-      const nftSupply = await nestingContract.totalSupply()
-      console.log('NFT supply', nftSupply)
+      const nftSupply = Number(await nestingContract.totalSupply())
+      console.log("NFT supply", nftSupply)
       for (let i = 0; i < nftSupply; i++) {
         let isOwner = false
+        let signerAddress = await signer.getAddress()
+        let tokenUri
+        const nftId = i+1; //NFT ID starts from 1. Note: NFT Id = 0 means NFT does not exist.
         try {
-          isOwner =
-            (await nestingContract.connect(signer).ownerOf(i)) ==
-            (await signer.getAddress())
+          tokenUri = await nestingContract.tokenURI(nftId) 
+          const nftOwner = await nestingContract.ownerOf(nftId)
+          // console.log('NFT Owner', nftOwner)
+          isOwner = nftOwner === signerAddress
+          // console.log('Is owner?', isOwner)
         } catch (error) {
           console.log(error)
         }
         if (isOwner) {
           nfts.push({
-            tokenId: i,
-            owner: await signer.getAddress(),
-            tokenUri: await nestingContract.tokenURI(i),
+            tokenId: nftId,
+            owner: signerAddress,
+            tokenUri
           })
         }
       }
@@ -118,7 +123,13 @@ const Nesting: NextPage = () => {
     if (signer instanceof Signer) {
       const tx = await factoryContract
         .connect(signer)
-        .deployRMRKNesting(nameInput, symbolInput, maxSupplyInput, priceInput, collectionMetadataInput)
+        .deployRMRKNesting(
+          nameInput,
+          symbolInput,
+          maxSupplyInput,
+          priceInput,
+          collectionMetadataInput
+        )
 
       addRecentTransaction({
         hash: tx.hash,
