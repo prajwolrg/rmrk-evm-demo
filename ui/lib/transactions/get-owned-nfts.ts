@@ -15,18 +15,25 @@ export const getOwnedNfts = async ({ signer, contractAddress, abi }: IProps) => 
     const caller = await signer.getAddress();
     if (owner === caller) isContractOwner = true;
     const nftSupply = await multiResourceContract.totalSupply();
+    console.log('NFT Supply', nftSupply)
     for (let i = 1; i <= nftSupply.toNumber(); i++) {
       let isAssetOwner = false;
       try {
-        const assetOwner = await multiResourceContract.connect(signer).ownerOf(i);
+        const assetOwner = await multiResourceContract.ownerOf(i);
+        console.log('Asset Owner', assetOwner)
         const caller = await signer.getAddress();
+        console.log('Caller', caller)
         isAssetOwner = assetOwner === caller;
+        console.log('Is Asset Owner ? ', isAssetOwner)
       } catch (error) {
         console.log(error);
       }
       if (isAssetOwner) {
         const owner = await signer.getAddress();
+        console.log('YES Owner')
+        console.log(i)
         const tokenUri = await multiResourceContract.tokenURI(i);
+        console.log(tokenUri)
         nfts.push({
           tokenId: i,
           owner,
