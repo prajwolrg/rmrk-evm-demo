@@ -67,6 +67,7 @@ const Nesting: NextPage = () => {
         abis.nestingImplAbi,
         signer
       )
+
       const nftSupply = Number(await nestingContract.totalSupply())
       console.log("NFT supply", nftSupply)
       for (let i = 0; i < nftSupply; i++) {
@@ -91,6 +92,7 @@ const Nesting: NextPage = () => {
           })
         }
       }
+
     }
     return nfts
   }

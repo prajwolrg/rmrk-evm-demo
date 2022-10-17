@@ -74,26 +74,35 @@ const NestingNft = () => {
     const nftOwner = await nestingContract.ownerOf(tokenId)
 
     if (signer instanceof Signer) {
-      console.log("Fetching NFT collection")
-      const signerAddress = await signer.getAddress()
+
+      const nftSupply = Number(await nestingContract.totalSupply())
+      console.log("NFT supply", nftSupply)
       for (let i = 0; i < nftSupply; i++) {
         let isOwner = false
+        let signerAddress = await signer.getAddress()
+        let tokenUri
+        const nftId = i + 1 //NFT ID starts from 1. Note: NFT Id = 0 means NFT does not exist.
         try {
-          isOwner =
-            (await nestingContract.connect(signer).ownerOf(i)) == signerAddress
+          tokenUri = await nestingContract.tokenURI(nftId)
+          const nftOwner = await nestingContract.ownerOf(nftId)
+          // console.log('NFT Owner', nftOwner)
+          isOwner = nftOwner === signerAddress
+          // console.log('Is owner?', isOwner)
         } catch (error) {
-          // console.log(error)
+          console.log(error)
         }
-        if (isOwner && i != Number(tokenId)) {
+        if (isOwner) {
           nfts.push({
-            tokenId: i,
+            tokenId: nftId,
             owner: signerAddress,
-            tokenUri: await nestingContract.tokenURI(i),
+            tokenUri,
           })
         }
       }
+
       setOwnedNfts(nfts)
     }
+
     for (const r of allResources) {
       const resourceData = await nestingContract.getResource(r)
       allData.push(resourceData)
@@ -107,15 +116,17 @@ const NestingNft = () => {
       activeResourcesData.push(resourceData)
     }
     for (const c of pendingChildren) {
+      const tokenUri = await nestingContract.tokenURI(c.toString().split(",")[0])
       pendingChildrenNfts.push({
         tokenId: c.toString().split(",")[0],
-        tokenUri: await nestingContract.tokenURI(c.toString().split(",")[0]),
+        tokenUri
       })
     }
     for (const c of children) {
+      const tokenUri = await nestingContract.tokenURI(c.toString().split(",")[0])
       childrenNfts.push({
         tokenId: c.toString().split(",")[0],
-        tokenUri: await nestingContract.tokenURI(c.toString().split(",")[0]),
+        tokenUri
       })
     }
     setTokenOwner(nftOwner)
@@ -234,11 +245,19 @@ const NestingNft = () => {
   }
 
   async function removeChild(childId: number, index: number) {
+    console.log('trying to remove child')
+
+    //TODO: Fix the hack below
+    // Might have to use RMRKOwnerOf function or add input field of _to
+
+    const _to = await signer?.getAddress()
+    console.log(tokenId, index, _to)
+
     if (signer instanceof Signer) {
       const tx = await nestingContract
         .connect(signer)
-        .removeChild(tokenId, index)
-        // .unnestChild(tokenId, childId, index)
+        // .removeChild(tokenId, index)
+      .unnestChild(tokenId, index, _to)
       addRecentTransaction({
         hash: tx.hash,
         description: "Removing child from this NFT",
