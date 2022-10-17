@@ -51,40 +51,32 @@ const Equippable: NextPage = () => {
     signerOrProvider: signer,
   })
 
-  const tokenContract = useContract({
-    ...tokenContractDetails,
-    signerOrProvider: signer,
-  })
-
-  const registryContract = useContract({
-    ...registryContractDetails,
-    signerOrProvider: signer,
-  })
-
   const handleContractSelection = (e: React.ChangeEvent<HTMLInputElement>) => {
     setCurrentRmrkDeployment(rmrkCollections[Number(e.target.value)])
   }
 
-  const onSubmit = (collectionFields: CollectionFormFields) => {
+  const onSubmit = async (collectionFields: CollectionFormFields) => {
     const { nameInput, symbolInput, maxSupplyInput, priceInput } =
       collectionFields
-    deployContract({
-      signer,
-      registryContract,
-      tokenContract,
-      callFactory: () =>
-        factoryContract
-          .connect(signer)
-          .deployRMRKEquippable(
-            nameInput,
-            symbolInput,
-            maxSupplyInput,
-            priceInput
-          ),
-      addRecentTransaction,
-    }).then((receipt) =>
-      setCurrentRmrkDeployment(receipt?.events ? receipt.events[1].address : "")
-    )
+
+    const tx = await factoryContract
+      .connect(signer)
+      .deployRMRKEquippable(
+        nameInput,
+        symbolInput,
+        maxSupplyInput,
+        priceInput,
+      )
+
+    addRecentTransaction({
+      hash: tx.hash,
+      description: "Deploying a new RMRK NFT contract",
+      confirmations: 1,
+    })
+
+    const receipt = await tx.wait()
+    setCurrentRmrkDeployment(receipt.events[1].args[0])
+    
   }
 
   const onMint = () => {

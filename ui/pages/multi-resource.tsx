@@ -9,9 +9,7 @@ import Image from "next/image"
 import Link from "next/link"
 import abis from "../abis/abis"
 import {
-  registryContractDetails,
   RMRKMultiResourceFactoryContractAddress,
-  tokenContractDetails,
 } from "../constants"
 import {
   deployContract,
@@ -53,17 +51,7 @@ const MultiResource: NextPage = () => {
     signerOrProvider: signer,
   })
 
-  const tokenContract = useContract({
-    ...tokenContractDetails,
-    signerOrProvider: signer,
-  })
-
-  const registryContract = useContract({
-    ...registryContractDetails,
-    signerOrProvider: signer,
-  })
-
-  const onSubmit = (collectionFields: CollectionFormFields) => {
+  const onSubmit = async (collectionFields: CollectionFormFields) => {
     const {
       nameInput,
       symbolInput,
@@ -72,24 +60,24 @@ const MultiResource: NextPage = () => {
       collectionMetadataInput,
     } = collectionFields
 
-    deployContract({
-      signer,
-      registryContract,
-      tokenContract,
-      callFactory: () =>
-        factoryContract
-          .connect(signer)
-          .deployRMRKMultiResource(
-            nameInput,
-            symbolInput,
-            maxSupplyInput,
-            priceInput,
-            collectionMetadataInput
-          ),
-      addRecentTransaction,
-    }).then((receipt) =>
-      setCurrentRmrkDeployment(receipt?.events ? receipt.events[1].address : "")
-    )
+    const tx = await factoryContract
+      .connect(signer)
+      .deployRMRKMultiResource(
+        nameInput,
+        symbolInput,
+        maxSupplyInput,
+        priceInput,
+        collectionMetadataInput
+      )
+
+    addRecentTransaction({
+      hash: tx.hash,
+      description: "Deploying a new RMRK NFT contract",
+      confirmations: 1,
+    })
+
+    const receipt = await tx.wait()
+    setCurrentRmrkDeployment(receipt.events[1].args[0])
   }
 
   const onMint = () => {
