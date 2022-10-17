@@ -68,6 +68,7 @@ const Nesting: NextPage = () => {
         signer
       )
       const nftSupply = await nestingContract.totalSupply()
+      console.log('NFT supply', nftSupply)
       for (let i = 0; i < nftSupply; i++) {
         let isOwner = false
         try {
@@ -100,9 +101,10 @@ const Nesting: NextPage = () => {
       const options = {
         value: nestingContract.pricePerMint(),
       }
+      const signerAddress = await signer.getAddress()
       const tx = await nestingContract
         .connect(signer)
-        .mint(await signer.getAddress(), 1, options)
+        .mint(signerAddress, 1, options)
 
       addRecentTransaction({
         hash: tx.hash,
@@ -125,8 +127,7 @@ const Nesting: NextPage = () => {
       })
 
       const receipt = await tx.wait()
-      console.log(receipt)
-      // setCurrentRmrkDeployment(receipt.events[1].args[0])
+      setCurrentRmrkDeployment(receipt.events[1].args[0])
     }
   }
 

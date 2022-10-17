@@ -48,13 +48,13 @@ const moonBaseChain: Chain = {
 
 const { chains, provider, webSocketProvider } = configureChains(
   [
+    chain.hardhat,
     // moonBaseChain,
     // chain.goerli,
     // moonRiverChain,
-    // ...(process.env.NEXT_PUBLIC_ENABLE_TESTNETS === 'true'
-    //   ? [moonBaseChain]
-    //   : []),
-    chain.hardhat
+    ...(process.env.NEXT_PUBLIC_ENABLE_TESTNETS === 'true'
+      ? [moonBaseChain]
+      : []),
   ],
   [
     alchemyProvider({
