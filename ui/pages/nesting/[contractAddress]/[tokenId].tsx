@@ -58,7 +58,10 @@ const NestingNft = () => {
     const collectionUri = await nestingContract.tokenURI(tokenId)
     let res = await fetch(`${collectionUri}/${tokenId}.json`)
     const data = await res.json()
-    const tokenUri: string = data.image_url
+
+    const initialImageUri = data.image_url
+    let [, cid] = initialImageUri.split("/ipfs/")
+    const tokenUri = `https://ipfs.io/ipfs/${cid}`
 
     const allResources: string[] = await nestingContract.getAllResources()
     const children: string[] = await nestingContract.childrenOf(tokenId)
@@ -92,7 +95,9 @@ const NestingNft = () => {
           const collectionUri = await nestingContract.tokenURI(nftId)
           let res = await fetch(`${collectionUri}/${nftId}.json`)
           const data = await res.json()
-          imageUri = data.image_url
+          const initialImageUri = data.image_url
+          let [, cid] = initialImageUri.split("/ipfs/")
+          imageUri = `https://ipfs.io/ipfs/${cid}`
 
           const nftOwner = await nestingContract.ownerOf(nftId)
           // console.log('NFT Owner', nftOwner)
@@ -132,7 +137,9 @@ const NestingNft = () => {
       const collectionMetadataUri = await nestingContract.tokenURI(_tokenId)
       let res = await fetch(`${collectionMetadataUri}/${_tokenId}.json`)
       const data = await res.json()
-      const imageUri = data.image_url
+      const initialImageUri = data.image_url
+      let [, cid] = initialImageUri.split("/ipfs/")
+      const imageUri = `https://ipfs.io/ipfs/${cid}`
 
       pendingChildrenNfts.push({
         tokenId: c.toString().split(",")[0],
@@ -145,7 +152,9 @@ const NestingNft = () => {
       const collectionMetadataUri = await nestingContract.tokenURI(_tokenId)
       let res = await fetch(`${collectionMetadataUri}/${_tokenId}.json`)
       const data = await res.json()
-      const imageUri = data.image_url
+      const initialImageUri = data.image_url
+      let [, cid] = initialImageUri.split("/ipfs/")
+      const imageUri = `https://ipfs.io/ipfs/${cid}`
       childrenNfts.push({
         tokenId: c.toString().split(",")[0],
         tokenUri: imageUri,

@@ -74,14 +74,15 @@ const Nesting: NextPage = () => {
         let isOwner = false
         let signerAddress = await signer.getAddress()
         let imageUri
-        const nftId = i+1; //NFT ID starts from 1. Note: NFT Id = 0 means NFT does not exist.
+        const nftId = i + 1 //NFT ID starts from 1. Note: NFT Id = 0 means NFT does not exist.
         try {
-          
           //TODO: fix direct tokenURI [Expected to be fixed by RMRK team]
           const collectionUri = await nestingContract.tokenURI(nftId)
           let res = await fetch(`${collectionUri}/${nftId}.json`)
           const data = await res.json()
-          imageUri = data.image_url;
+          const initialImageUri = data.image_url
+          let [, cid] = initialImageUri.split("/ipfs/")
+          imageUri = `https://ipfs.io/ipfs/${cid}`
 
           const nftOwner = await nestingContract.ownerOf(nftId)
           // console.log('NFT Owner', nftOwner)
@@ -94,11 +95,10 @@ const Nesting: NextPage = () => {
           nfts.push({
             tokenId: nftId,
             owner: signerAddress,
-            tokenUri: imageUri
+            tokenUri: imageUri,
           })
         }
       }
-
     }
     return nfts
   }

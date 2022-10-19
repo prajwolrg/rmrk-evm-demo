@@ -12,7 +12,9 @@ export const fetchSignleNft = async ({ contract, tokenId }: IProps) => {
   const collectionMetadataUri = await contract.tokenURI(tokenId);
   let res = await fetch(`${collectionMetadataUri}/${tokenId}.json`);
   const data = await res.json();
-  const imageUri = data.image_url
+  const initialImageUri = data.image_url
+  let [ , cid] = initialImageUri.split('/ipfs/')
+  const imageUri = `https://ipfs.io/ipfs/${cid}`
 
   // console.log('Collection URI', collectionMetadataUri);
   // console.log('Image URI', imageUri);
