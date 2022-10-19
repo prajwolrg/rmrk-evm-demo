@@ -20,13 +20,18 @@ contract RMRKEquippableFactory {
         string memory name,
         string memory symbol,
         uint256 maxSupply,
-        uint256 pricePerMint //in WEI
+        uint256 pricePerMint, //in WEI
+        string memory collectionMetadata //in WEI
     ) public {
         RMRKEquippableImpl equippableContract = new RMRKEquippableImpl(
             name,
             symbol,
             maxSupply,
-            pricePerMint
+            pricePerMint,
+            collectionMetadata,
+            collectionMetadata, // token URI
+            msg.sender, // royalty reciever
+            0 // royalty basis points
         );
 
         equippableCollections.push(address(equippableContract));

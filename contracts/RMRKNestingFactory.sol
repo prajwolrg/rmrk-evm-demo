@@ -28,7 +28,10 @@ contract RMRKNestingFactory {
                 symbol,
                 maxSupply,
                 pricePerMint,
-                collectionMetadata
+                collectionMetadata,
+                collectionMetadata, // token URI
+                msg.sender, // royalty reciever
+                0 // royalty basis points
             );
         nestingCollections.push(address(nestingContract));
         nestingContract.transferOwnership(msg.sender);

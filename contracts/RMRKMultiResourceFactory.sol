@@ -28,7 +28,10 @@ contract RMRKMultiResourceFactory {
             symbol,
             maxSupply,
             pricePerMint,
-            collectionMetadata
+            collectionMetadata,
+            collectionMetadata, // token URI
+            msg.sender, // royalty reciever
+            0 // royalty basis points
         );
         multiResourceCollections.push(address(multiResourceContract));
         multiResourceContract.transferOwnership(msg.sender);
