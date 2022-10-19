@@ -57,6 +57,7 @@ const MultiResourceNft = () => {
         allResources,
         activeResources,
         pendingResources,
+        tokenUri
       }) => {
         setCollectionName(name)
         setResources(allResources)
