@@ -37,7 +37,7 @@ export const getOwnedNfts = async ({ signer, contractAddress, abi }: IProps) => 
         const collectionMetadataUri = await multiResourceContract.tokenURI(i)
         let res = await fetch(`${collectionMetadataUri}/${i}.json`)
         const data = await res.json()
-        const imageUri = data.image;
+        const imageUri = data.image_url;
 
         const tokenUri = imageUri
 

@@ -26,7 +26,7 @@ const Nft = (props: {
         )}
         <p className="text-lg m-0.5">Token ID: {props.tokenId}</p>
         <Image
-          src={"https://ipfs.io/ipfs/" + props.tokenUri}
+          src={props.tokenUri}
           width={50}
           height={50}
           alt={""}

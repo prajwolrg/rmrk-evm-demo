@@ -81,7 +81,7 @@ const Nesting: NextPage = () => {
           const collectionUri = await nestingContract.tokenURI(nftId)
           let res = await fetch(`${collectionUri}/${nftId}.json`)
           const data = await res.json()
-          imageUri = data.image;
+          imageUri = data.image_url;
 
           const nftOwner = await nestingContract.ownerOf(nftId)
           // console.log('NFT Owner', nftOwner)

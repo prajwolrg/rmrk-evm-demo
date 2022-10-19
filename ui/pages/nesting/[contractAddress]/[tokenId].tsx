@@ -58,7 +58,7 @@ const NestingNft = () => {
     const collectionUri = await nestingContract.tokenURI(tokenId)
     let res = await fetch(`${collectionUri}/${tokenId}.json`)
     const data = await res.json()
-    const tokenUri: string = data.image
+    const tokenUri: string = data.image_url
 
     const allResources: string[] = await nestingContract.getAllResources()
     const children: string[] = await nestingContract.childrenOf(tokenId)
@@ -92,7 +92,7 @@ const NestingNft = () => {
           const collectionUri = await nestingContract.tokenURI(nftId)
           let res = await fetch(`${collectionUri}/${nftId}.json`)
           const data = await res.json()
-          imageUri = data.image
+          imageUri = data.image_url
 
           const nftOwner = await nestingContract.ownerOf(nftId)
           // console.log('NFT Owner', nftOwner)
@@ -311,7 +311,7 @@ const NestingNft = () => {
         <code>{tokenUri}</code>
         <div className="mt-2">
           <Image
-            src={"https://ipfs.io/ipfs/" + tokenUri}
+            src={tokenUri}
             width={120}
             height={120}
             alt={""}
@@ -447,7 +447,7 @@ const NestingNft = () => {
                         Token ID: {nft.tokenId}
                       </p>
                       <Image
-                        src={"https://ipfs.io/ipfs/" + nft.tokenUri}
+                        src={nft.tokenUri}
                         width={100}
                         height={100}
                         alt={""}

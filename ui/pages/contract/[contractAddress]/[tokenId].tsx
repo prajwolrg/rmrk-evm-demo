@@ -119,7 +119,7 @@ const MultiResourceNft = () => {
       <div className={styles.nft}>
         <p>Token ID: {tokenId}</p>
         <Image
-          src={"https://ipfs.io/ipfs/" + tokenUri}
+          src={tokenUri}
           width={50}
           height={50}
           alt={""}

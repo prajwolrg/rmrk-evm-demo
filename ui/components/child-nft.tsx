@@ -21,7 +21,7 @@ function ChildNft(props: {
           <p className="mb-2">Child Token ID: {props.child.tokenId}</p>
 
           <Image
-            src={"https://ipfs.io/ipfs/" + props.child.tokenUri}
+            src={props.child.tokenUri}
             width={100}
             height={100}
             alt={""}
