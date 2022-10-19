@@ -32,8 +32,18 @@ export const getOwnedNfts = async ({ signer, contractAddress, abi }: IProps) => 
         const owner = await signer.getAddress();
         console.log('YES Owner')
         console.log(i)
-        const tokenUri = await multiResourceContract.tokenURI(i);
-        console.log(tokenUri)
+
+        //TODO: fix direct tokenURI [Expected to be fixed by RMRK team]
+        const collectionMetadataUri = await multiResourceContract.tokenURI(i)
+        let res = await fetch(`${collectionMetadataUri}/${i}.json`)
+        const data = await res.json()
+        const imageUri = data.image;
+
+        const tokenUri = imageUri
+
+        console.log("Collection URI", collectionMetadataUri)
+        console.log("Image URI", tokenUri)
+
         nfts.push({
           tokenId: i,
           owner,
