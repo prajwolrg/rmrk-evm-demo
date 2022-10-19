@@ -127,21 +127,28 @@ const NestingNft = () => {
       activeResourcesData.push(resourceData)
     }
     for (const c of pendingChildren) {
-      const tokenUri = await nestingContract.tokenURI(
-        c.toString().split(",")[0]
-      )
+      //TODO: fix direct tokenURI [Expected to be fixed by RMRK team]
+      const _tokenId = c.toString().split(",")[0]
+      const collectionMetadataUri = await nestingContract.tokenURI(_tokenId)
+      let res = await fetch(`${collectionMetadataUri}/${_tokenId}.json`)
+      const data = await res.json()
+      const imageUri = data.image_url
+
       pendingChildrenNfts.push({
         tokenId: c.toString().split(",")[0],
-        tokenUri,
+        tokenUri: imageUri,
       })
     }
     for (const c of children) {
-      const tokenUri = await nestingContract.tokenURI(
-        c.toString().split(",")[0]
-      )
+      //TODO: fix direct tokenURI [Expected to be fixed by RMRK team]
+      const _tokenId = c.toString().split(",")[0]
+      const collectionMetadataUri = await nestingContract.tokenURI(_tokenId)
+      let res = await fetch(`${collectionMetadataUri}/${_tokenId}.json`)
+      const data = await res.json()
+      const imageUri = data.image_url
       childrenNfts.push({
         tokenId: c.toString().split(",")[0],
-        tokenUri,
+        tokenUri: imageUri,
       })
     }
     setTokenOwner(nftOwner)
@@ -310,12 +317,7 @@ const NestingNft = () => {
         <p className="mt-1">Token URI: </p>
         <code>{tokenUri}</code>
         <div className="mt-2">
-          <Image
-            src={tokenUri}
-            width={120}
-            height={120}
-            alt={""}
-          />
+          <Image src={tokenUri} width={120} height={120} alt={""} />
         </div>
 
         <div>
