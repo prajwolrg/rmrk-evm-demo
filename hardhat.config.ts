@@ -3,7 +3,7 @@ import "@nomicfoundation/hardhat-toolbox";
 import "@typechain/hardhat";
 import "hardhat-gas-reporter";
 import "solidity-coverage";
-import "hardhat-contract-sizer";
+// import "hardhat-contract-sizer";
 
 const config: HardhatUserConfig = {
     solidity: {
