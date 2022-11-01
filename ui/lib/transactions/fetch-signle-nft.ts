@@ -21,7 +21,7 @@ export const fetchSignleNft = async ({ contract, tokenId }: IProps) => {
 
   // const tokenUri: string = await contract.tokenURI(tokenId)
   const tokenUri: string = imageUri
-  // console.log(tokenUri)
+  console.log(tokenUri)
 
   const allResources: string[] = await contract.getAllResources();
   const activeResources: string[] = await contract.getActiveResources(tokenId);
@@ -30,16 +30,42 @@ export const fetchSignleNft = async ({ contract, tokenId }: IProps) => {
   const pendingResourcesData: string[] = [];
   const activeResourcesData: string[] = [];
   for (const r of allResources) {
-    const resourceData = await contract.getResource(r);
-    allData.push(resourceData);
+    const resourceData = await contract.getResourceMeta(r);
+    let res = await fetch(`${resourceData}/${tokenId}.json`);
+    const data = await res.json();
+    const initialImageUri = data.image_url
+    let [ , cid] = initialImageUri.split('/ipfs/')
+    const imageUri = `https://ipfs.io/ipfs/${cid}`
+    // console.log(imageUri)
+
+    console.log('All Resources', imageUri)
+    allData.push(imageUri);
   }
   for (const r of pendingResources) {
-    const resourceData = await contract.getResource(r);
-    pendingResourcesData.push(resourceData);
+    const resourceData = await contract.getResourceMeta(r);
+    let res = await fetch(`${resourceData}/${tokenId}.json`);
+    const data = await res.json();
+    const initialImageUri = data.image_url
+    let [ , cid] = initialImageUri.split('/ipfs/')
+    const imageUri = `https://ipfs.io/ipfs/${cid}`
+    // console.log(imageUri)
+
+    console.log('All Resources', imageUri)
+    pendingResourcesData.push(imageUri);
+    // pendingResourcesData.push(resourceData);
   }
   for (const r of activeResources) {
-    const resourceData = await contract.getResource(r);
-    activeResourcesData.push(resourceData);
+    const resourceData = await contract.getResourceMeta(r);
+    let res = await fetch(`${resourceData}/${tokenId}.json`);
+    const data = await res.json();
+    const initialImageUri = data.image_url
+    let [ , cid] = initialImageUri.split('/ipfs/')
+    const imageUri = `https://ipfs.io/ipfs/${cid}`
+    // console.log(imageUri)
+
+    console.log('All Resources', imageUri)
+    activeResourcesData.push(imageUri);
+    // activeResourcesData.push(resourceData);
   }
 
   // console.log("Fetched", allData, pendingResourcesData, activeResourcesData, name, allResources, activeResources, pendingResources, tokenUri)

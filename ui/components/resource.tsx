@@ -17,7 +17,7 @@ export default function Resource(props: {
       )}
       <br />
       <Image
-        src={props.strings[props.index][1]}
+        src={props.strings[props.index]}
         width={100}
         height={100}
         alt={""}
