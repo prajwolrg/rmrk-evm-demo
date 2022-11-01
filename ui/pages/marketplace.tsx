@@ -310,7 +310,7 @@ const Marketplace: NextPage = () => {
         <p className="mb-4">Buy or Sell NFTs on the RMRK Marketplace:</p>
 
         <p className="mt-5">
-          Your RMRK NFT Contract will be deployed on the Moonbase Alpha testnet.{" "}
+          Your RMRK NFT Contract will be deployed on the testnet.{" "}
         </p>
 
         <h3 className={styles.description}>

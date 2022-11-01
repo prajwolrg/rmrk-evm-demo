@@ -187,7 +187,7 @@ const MultiResource: NextPage = () => {
           </Form>
         </Formik>
         <p className="mt-5">
-          Your RMRK NFT Contract will be deployed on the Moonbase Alpha testnet.{" "}
+          Your RMRK NFT Contract will be deployed on the testnet.{" "}
         </p>
 
         {rmrkCollections.length > 0 && (

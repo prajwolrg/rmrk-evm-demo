@@ -146,7 +146,7 @@ const Nesting: NextPage = () => {
       })
 
       const receipt = await tx.wait()
-      setCurrentRmrkDeployment(receipt.events[1].args[0])
+      // setCurrentRmrkDeployment(receipt.events[1].args[0])
     }
   }
 
@@ -269,7 +269,7 @@ const Nesting: NextPage = () => {
         </button>
 
         <p className="mt-5">
-          Your RMRK NFT Contract will be deployed on the Moonbase Alpha testnet.{" "}
+          Your RMRK NFT Contract will be deployed on the testnet.{" "}
         </p>
 
         {rmrkCollections.length > 0 && (
@@ -293,14 +293,14 @@ const Nesting: NextPage = () => {
                   <Link href={"/nesting/" + contract}>
                     <code className="mx-2 hover:underline">{contract}</code>
                   </Link>
-                  <a href={"https://moonbase.moonscan.io/address/" + contract}>
+                  {/* <a href={"https://moonbase.moonscan.io/address/" + contract}>
                     <Image
                       alt="logo"
                       src="/moonbeam.svg"
                       width="25"
                       height="25"
                     />
-                  </a>
+                  </a> */}
                 </div>
               )
             })}
