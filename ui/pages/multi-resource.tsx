@@ -209,9 +209,7 @@ const MultiResource: NextPage = () => {
                     checked={contract === currentRmrkDeployment}
                   />
 
-                  <Link href={"/contract/" + contract}>
-                    <code className="mx-2 hover:underline">{contract}</code>
-                  </Link>
+                  <code className="mx-2 hover:underline">{contract}</code>
                   <a href={"https://arctic.epirus.io/address/" + contract}>
                     <Image
                       alt="logo"
