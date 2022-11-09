@@ -46,15 +46,33 @@ const moonBaseChain: Chain = {
     testnet: true,
 };
 
+const arcticChain: Chain = {
+    id: 552,
+    name: 'Arctic Testnet',
+    network: 'arctic',
+    iconUrl: 'https://icenetwork.io/assets/images/ice-logo-rounded.svg',
+    iconBackground: '#fff',
+    nativeCurrency: {
+        decimals: 18,
+        name: 'SNOW Test Token',
+        symbol: 'ICY',
+    },
+    rpcUrls: {
+        default: 'https://arctic-rpc.icenetwork.io:9933',
+    },
+    blockExplorers: {
+        default: { name: 'Epirus', url: 'https://arctic.epirus.io/' },
+    },
+    testnet: true,
+};
+
 const { chains, provider, webSocketProvider } = configureChains(
   [
-    chain.hardhat,
+    // chain.hardhat,
     // moonBaseChain,
     // chain.goerli,
     // moonRiverChain,
-    ...(process.env.NEXT_PUBLIC_ENABLE_TESTNETS === 'true'
-      ? [moonBaseChain]
-      : []),
+    arcticChain
   ],
   [
     alchemyProvider({

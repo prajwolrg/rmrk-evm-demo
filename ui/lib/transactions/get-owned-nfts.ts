@@ -35,6 +35,7 @@ export const getOwnedNfts = async ({ signer, contractAddress, abi }: IProps) => 
 
         //TODO: fix direct tokenURI [Expected to be fixed by RMRK team]
         const collectionMetadataUri = await multiResourceContract.tokenURI(i);
+        console.log(collectionMetadataUri)
         let res = await fetch(`${collectionMetadataUri}/${i}.json`);
         const data = await res.json();
         const initialImageUri = data.image_url;

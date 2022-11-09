@@ -26,17 +26,16 @@ async function main() {
   const allCollectionDeployments = await rmrkNestingFactory.getCollections()
   console.log(allCollectionDeployments)
 
-  console.log('Deploy the RMRKEquippableFactory contract')
-  const RMRKEquippableFactory = await ethers.getContractFactory('RMRKEquippableFactory');
-  const rmrkEquippableFactory = await RMRKEquippableFactory.deploy();
-  await rmrkEquippableFactory .deployed();
-  console.log('RMRK Equippable Factory deployed to:', rmrkEquippableFactory.address);
+  // console.log('Deploy the RMRKEquippableFactory contract')
+  // const RMRKEquippableFactory = await ethers.getContractFactory('RMRKEquippableFactory');
+  // const rmrkEquippableFactory = await RMRKEquippableFactory.deploy();
+  // await rmrkEquippableFactory .deployed();
+  // console.log('RMRK Equippable Factory deployed to:', rmrkEquippableFactory.address);
 
 
   const envFileContents = `#Hardhat Addresses
 NEXT_PUBLIC_RMRK_MULTI_RESOURCE_FACTORY_CONTRACT_ADDRESS='${rmrkMultiResourceFactory.address}'
 NEXT_PUBLIC_RMRK_NESTING_FACTORY_CONTRACT_ADDRESS='${rmrkNestingFactory.address}'
-NEXT_PUBLIC_RMRK_EQUIPPABLE_FACTORY_CONTRACT_ADDRESS='${rmrkEquippableFactory.address}'
   `
   console.log('Creating an .env file for frontend')
   fs.writeFileSync('ui/.env', envFileContents)

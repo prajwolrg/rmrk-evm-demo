@@ -183,7 +183,7 @@ const Equippable: NextPage = () => {
           </Form>
         </Formik>
         <p className="mt-5">
-          Your RMRK NFT Contract will be deployed on the testnet.{" "}
+          Your RMRK NFT Contract will be deployed on the Arctic testnet.{" "}
         </p>
 
         {rmrkCollections.length > 0 && (
@@ -210,7 +210,7 @@ const Equippable: NextPage = () => {
                   <a href={"https://moonbase.moonscan.io/address/" + contract}>
                     <Image
                       alt="logo"
-                      src="/moonbeam.svg"
+                      src="/ice.svg"
                       width="25"
                       height="25"
                     />
